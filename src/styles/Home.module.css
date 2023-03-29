@@ -1,0 +1,72 @@
+.main-sidebar {
+  float: left;
+  width: 15%;
+  background-color: #bac2ce;
+}
+
+.main-content {
+  float: left;
+  width: 85%;
+  background-color: #dfd9a6;
+}
+
+.main-navbar {
+  text-align: center;
+  background-color: aquamarine;
+  height: 3.8rem;
+}
+
+.header-container {
+  height: 3.8rem;
+  display: flex;
+}
+
+.search-navbar {
+  width: 80%;
+}
+
+.noti-profile {
+  width: 20%;
+  display: flex;
+}
+
+.input-search {
+  height: 3.8rem;
+  width: 95%
+}
+
+.btn-search{
+  height: 3.8rem;
+  width: 5%
+}
+
+.btn-bell {
+  height: 3.8rem;
+  width: 30%
+}
+
+.img-profile {
+  height: 3.5rem;
+  width: 4rem;
+}
+
+.sidenav {
+  height: 100%;
+  width: 15%;;
+  position: fixed;
+  background-color: #b1afaf;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #000000;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
