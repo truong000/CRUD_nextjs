@@ -17,7 +17,6 @@ export const ListUser: React.FC = () => {
     dispatch(fetchUserList());
   }, [])
 
-  // console.log('list', users)
 
   if (pending) {
     return <div>Loading...</div>
@@ -51,7 +50,7 @@ export const ListUser: React.FC = () => {
               <td className={Style.td}>{user.address.street}, {user.address.number}, {user.address.city}</td>
               <td className={Style.td}>{user.phone}</td>
               <td className={Style.td}>
-                <button onClick={() => router.push('/UserDetail')}>Detail</button>
+                <button onClick={() => router.push(`/UserDetail/${user.id}`)}>Detail</button>
                 <button>Edit</button>
                 <button>Delete</button>
               </td>
