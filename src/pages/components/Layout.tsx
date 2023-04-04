@@ -1,6 +1,8 @@
 import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { ReactNode } from "react";
+
 
 interface LayoutProps {
     children: ReactNode;
@@ -14,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
                     <a href="/">DASHBOAD</a>
                 </div>
                 <div className="sidenav">
-                    <a href="#about">About</a>
+                    <Link href="/users">List Users</Link>
                     <a href="#services">Services</a>
                     <a href="#clients">Clients</a>
                     <a href="#contact">Contact</a>

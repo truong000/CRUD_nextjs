@@ -24,27 +24,43 @@ interface IUser {
 
 interface UsersState {
   users: Array<IUser>;
+  userDetail: IUser
   pending: boolean;
   error: boolean;
 }
 
 const initialState: UsersState = {
   users:[] as IUser[],
+  userDetail: {
+    id: 0,
+    email: '',
+    name: {
+      firstName: '',
+      lastName: '',
+    },
+    address: {
+      city: '',
+      street: '',
+      number: 0,
+    },
+    phone: ''
+  },
   pending: false,
   error: false,
 };
-
 
 export const fetchUserList = createAsyncThunk('user/getUserList', async () => {
    const response = await axios.get('https://fakestoreapi.com/users');
     return response.data;
 })
 
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    
+
   },
   extraReducers: builder => {
     builder
@@ -77,6 +93,8 @@ export const userSlice = createSlice({
       });
   },
 });
+
+
 
 export const getListUser = (state: RootState) => state.users
 

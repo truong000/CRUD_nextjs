@@ -2,10 +2,11 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchUserList, getListUser } from "@/redux/Slice/userSlice";
 import { useEffect } from "react";
 import Style from '@/styles/ListUser.module.css'
-import router from "next/router";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 
-export const ListUser: React.FC = () => {
+const Users: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     users,
@@ -25,6 +26,8 @@ export const ListUser: React.FC = () => {
   if (error) {
     return <div>error</div>
   }
+
+  const router = useRouter()
 
   return (
     <div>
@@ -50,7 +53,8 @@ export const ListUser: React.FC = () => {
               <td className={Style.td}>{user.address.street}, {user.address.number}, {user.address.city}</td>
               <td className={Style.td}>{user.phone}</td>
               <td className={Style.td}>
-                <button onClick={() => router.push(`/UserDetail/${user.id}`)}>Detail</button>
+                <button><Link href={`/users/${user.id}`}>Detail</Link></button>
+                <button onClick={() => router.push(`/users/${user.id}`)}>HEEH</button>
                 <button>Edit</button>
                 <button>Delete</button>
               </td>
@@ -61,3 +65,5 @@ export const ListUser: React.FC = () => {
     </div>
   );
 }
+
+export default Users;
