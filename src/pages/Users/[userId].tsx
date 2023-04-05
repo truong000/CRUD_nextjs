@@ -1,36 +1,17 @@
+import { IUser, getUserDetail } from "@/redux/Slice/userSlice";
 import { RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { get } from "http";
 
-export async function getStaticProps() {
-    const param = useParams
-    const response = await fetch(`https://fakestoreapi.com/users/${param}`);
-    const data = await response.json();
+import React from "react";
 
-    return {
-        props: {
-            data,
-        },
-    }
+interface UserProps {
+    user: IUser;
 }
 
-export async function getStaticPaths() {
-    return {
-      paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
-      fallback: false, // can also be true or 'blocking'
-    }
-}
+function DetailUser({user}: UserProps) {
 
-
-export default function DetailUser({}) {
-
-    const {id} = useParams()
-    const userDetail = useSelector((state: RootState) => state.users.userDetail)
-    const dispatch = useDispatch(); 
-
-console.log("param", id);
-    
     return (
+
         <div>
             <h2>List Users</h2>
             <table >
@@ -46,18 +27,12 @@ console.log("param", id);
                 </thead>
 
                 <tbody>
-
                     <tr >
-                        <td >user.id</td>
-                        <td >user.email</td>
-                        <td >user.name.firstName user.name.lastName</td>
-                        <td >user.address.street user.address.number, user.address.city</td>
-                        <td >user.phone</td>
-                        <td >
-                            <button>Detail</button>
-                            <button>Edit</button>
-                            <button>Delete</button>
-                        </td>
+                        <td >{user.id}</td>
+                        <td >{user.email}</td>
+                        <td >{user.name.firstName} {user.name.lastName}</td>
+                        <td >{user.address.street} {user.address.number}, {user.address.city}</td>
+                        <td >{user.phone}</td>
                     </tr>
                 </tbody>
             </table>
@@ -65,30 +40,31 @@ console.log("param", id);
     )
 };
 
-// export const getStaticProps: GetStaticProps = async (params) => {
-//     const { data } = await axios.get(`https://fakestoreapi.com/users/${params.userId}`);
-//     const user = data;
-//     return {
-//         props: {
-//             user,
-//         },
-//     };
-// };
+export default DetailUser;
 
-// export const getStaticPaths: GetStaticPaths = async () =>{
-//     const response = await fetch(`https://fakestoreapi.com/users`);
-//     const data = await response.json()
-//     const paths = data.map((user: { id: any; }) => {
-//         return {
-//             params: { userId: `${user.id}`}
-//         }
-//     })
+export async function getStaticPaths() {
+    const response = await fetch('https://fakestoreapi.com/users');
+    const users = await response.json();
 
-//     return {
-//         paths: paths,
-//         fallback: true
-//     }
-// }
+    const paths = users.map((user: IUser) => ({
+        params: {userId: user.id.toString()},
+    }));
+
+    return {
+        paths,
+        fallback: false,
+    }
+}
+
+export async function getStaticProps({ params }: { params: { userId: string } }) {
+    const res = await fetch(
+        `https://fakestoreapi.com/users/${params.userId}`
+    );
+    const user = await res.json();
+
+    return {props: {user}};
+}
+
 
 
 

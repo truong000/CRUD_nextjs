@@ -4,11 +4,19 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import Layout from './components/Layout'
+import { useEffect } from 'react'
+import ModalDialog from 'react-bootstrap/esm/ModalDialog'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (<Provider store={store}>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  </Provider>)
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
+  
+  return (
+    <Provider store={store}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Provider>
+  );
 }

@@ -3,34 +3,34 @@ import axios from "axios";
 import { RootState } from "../store";
 
 
-interface NameInterface {
+export interface NameInterface {
   firstName: string;
   lastName: string;
 }
 
-interface AddressInterface {
+export interface AddressInterface {
   city: string;
   street: string;
   number: number;
 }
 
-interface IUser {
+export interface IUser {
   id: number;
   email: string;
   name: NameInterface;
   address: AddressInterface;
   phone: string;
 }
-
-interface UsersState {
+ 
+export interface UsersState {
   users: Array<IUser>;
   userDetail: IUser
   pending: boolean;
   error: boolean;
 }
 
-const initialState: UsersState = {
-  users:[] as IUser[],
+export const initialState: UsersState = {
+  users: [] as IUser[],
   userDetail: {
     id: 0,
     email: '',
@@ -50,17 +50,34 @@ const initialState: UsersState = {
 };
 
 export const fetchUserList = createAsyncThunk('user/getUserList', async () => {
-   const response = await axios.get('https://fakestoreapi.com/users');
-    return response.data;
+  const response = await axios.get('https://fakestoreapi.com/users');
+  return response.data;
 })
-
 
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-
+    getUserDetail: (state, action) => {
+      state.userDetail = action.payload;
+    },
+    addUser(state, action) {
+      state.users.push({
+        id: action.payload.id,
+        email: action.payload.email,
+        name: {
+          firstName: action.payload.name.firstname,
+          lastName: action.payload.name.lastname,
+        },
+        address: {
+          city: action.payload.address.city,
+          street: action.payload.address.street,
+          number: action.payload.address.number,
+        },
+        phone: action.payload.phone,
+      })
+    }
   },
   extraReducers: builder => {
     builder
@@ -70,7 +87,7 @@ export const userSlice = createSlice({
       .addCase(fetchUserList.fulfilled, (state, { payload }) => {
         state.pending = false;
         state.users = [];
-        payload.forEach((element:any) => {
+        payload.forEach((element: any) => {
           state.users.push({
             id: element.id,
             email: element.email,
@@ -87,14 +104,11 @@ export const userSlice = createSlice({
           });
         });
       })
-      .addCase(fetchUserList.rejected, state => {
-        state.pending = false;
-        state.error = true;
-      });
   },
 });
 
 
+export const { getUserDetail } = userSlice.actions
 
 export const getListUser = (state: RootState) => state.users
 

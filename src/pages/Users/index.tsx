@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import Style from '@/styles/ListUser.module.css'
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ModalDialog from "@/components/ButtonPopup";
+import 'node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 
 const Users: React.FC = () => {
@@ -61,7 +63,9 @@ const Users: React.FC = () => {
             </tr>
           ))}
         </tbody>
+
       </table>
+      <ModalDialog />
     </div>
   );
 }
