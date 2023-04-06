@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 import { addUser } from '@/redux/Slice/userSlice';
 
 
-function ModalDialog() {
+function ModalAddNewUser() {
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.users)
     const [showModal, setShowModal] = useState(false)
@@ -47,6 +47,18 @@ function ModalDialog() {
                 <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Id</Form.Label>
+                            <Row>
+                                <Col xs={12} md={4}>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="id"
+                                        value={id}
+                                        onChange={(e) => setId(Number(e.target.value))}      
+                                        autoFocus
+                                    />
+                                </Col>
+                            </Row>
                             <Form.Label>Name</Form.Label>
                             <Row>
                                 <Col xs={6} md={6}>
@@ -139,4 +151,4 @@ function ModalDialog() {
     )
 }
 
-export default ModalDialog
+export default ModalAddNewUser

@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import Style from '@/styles/ListUser.module.css'
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ModalDialog from "@/components/ButtonPopup";
 import 'node_modules/bootstrap/dist/css/bootstrap.min.css'
+import ModalAddNewUser from "@/components/ButtonPopupAddUser";
+import ModalEditUser from "@/components/ButtonPopupEditUser";
+
 
 
 
@@ -20,7 +22,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchUserList());
-  }, [])
+  },[])
 
 
   if (pending) {
@@ -59,7 +61,7 @@ const Users: React.FC = () => {
               <td className={Style.td}>
                 <button><Link href={`/users/${user.id}`}>Detail</Link></button>
                 <button onClick={() => router.push(`/users/${user.id}`)}>HEEH</button>
-                <button>Edit</button>
+                <ModalEditUser/>
                 <button>Delete</button>
               </td>
             </tr>
@@ -67,7 +69,7 @@ const Users: React.FC = () => {
         </tbody>
 
       </table>
-      <ModalDialog />
+      <ModalAddNewUser />
     </div>
   );
 }

@@ -62,6 +62,11 @@ export const addNewUser = createAsyncThunk('user/addUser', async (initialState) 
   return response.data;
 })
 
+export const editUser = createAsyncThunk('user/editUser', async (updatedUser: IUser) => {
+  const response = await axios.put(`https://fakestoreapi.com/users/${updatedUser.id}`, updatedUser);
+  return response.data;
+})
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -70,18 +75,24 @@ export const userSlice = createSlice({
       state.userDetail = action.payload;
     },
     addUser: (state, action) => {
-      state.userDetail.id = action.payload.id;
-      state.userDetail.name = {
-        firstname: action.payload.fisrtname,
-        lastname: action.payload.lastname
-      }
-      state.userDetail.email = action.payload.email;
-      state.userDetail.address = {
-        city: action.payload.city,
-        street: action.payload.street,
-        number: action.payload.number
-      }
-      state.userDetail.phone = action.payload.phone;
+      const newUser: IUser = {
+        id: action.payload.id,
+        email: action.payload.email,
+        name: {
+          firstname: action.payload.firstname,
+          lastname: action.payload.lastname
+        },
+        address: {
+          city: action.payload.city,
+          street: action.payload.street,
+          number: action.payload.number
+        },
+        phone: action.payload.phone
+      };
+
+      state.users.push(newUser);
+
+      console.log('newUser', newUser)
 
       axios.post<UsersState>(
         'https://fakestoreapi.com/users',
@@ -112,6 +123,13 @@ export const userSlice = createSlice({
           },
         },
       );
+    },
+    editUser: (state, action) => {
+      const updatedUser: IUser = action.payload;
+      const userIndex = state.users.findIndex((user) => user.id === updatedUser.id);
+      if (userIndex !== -1) {
+        state.users[userIndex] = updatedUser;
+      }
     }
   },
   extraReducers: builder => {
@@ -141,6 +159,10 @@ export const userSlice = createSlice({
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
         state.users.push(action.payload)
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.pending = false;
+        state.userDetail = action.payload;
       })
   },
 });
