@@ -8,6 +8,8 @@ import ModalDialog from "@/components/ButtonPopup";
 import 'node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 
+
+
 const Users: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
@@ -51,7 +53,7 @@ const Users: React.FC = () => {
             <tr className={Style.tr} key={user.id}>
               <td className={Style.td}>{user.id}</td>
               <td className={Style.td}>{user.email}</td>
-              <td className={Style.td}>{user.name.firstName} {user.name.lastName}</td>
+              <td className={Style.td}>{user.name.firstname} {user.name.lastname}</td>
               <td className={Style.td}>{user.address.street}, {user.address.number}, {user.address.city}</td>
               <td className={Style.td}>{user.phone}</td>
               <td className={Style.td}>
@@ -71,3 +73,5 @@ const Users: React.FC = () => {
 }
 
 export default Users;
+
+

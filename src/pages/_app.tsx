@@ -5,7 +5,6 @@ import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import Layout from './components/Layout'
 import { useEffect } from 'react'
-import ModalDialog from 'react-bootstrap/esm/ModalDialog'
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {

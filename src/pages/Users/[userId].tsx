@@ -30,7 +30,7 @@ function DetailUser({user}: UserProps) {
                     <tr >
                         <td >{user.id}</td>
                         <td >{user.email}</td>
-                        <td >{user.name.firstName} {user.name.lastName}</td>
+                        <td >{user.name.firstname} {user.name.lastname}</td>
                         <td >{user.address.street} {user.address.number}, {user.address.city}</td>
                         <td >{user.phone}</td>
                     </tr>
