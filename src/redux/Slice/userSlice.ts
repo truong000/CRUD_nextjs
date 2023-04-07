@@ -56,24 +56,11 @@ export const fetchUserList = createAsyncThunk('user/getUserList', async () => {
   return response.data;
 })
 
-
-export const addNewUser = createAsyncThunk('user/addUser', async (initialState) => {
-  const response = await axios.post('https://fakestoreapi.com/users');
-  return response.data;
-})
-
-export const editUser = createAsyncThunk('user/editUser', async (updatedUser: IUser) => {
-  const response = await axios.put(`https://fakestoreapi.com/users/${updatedUser.id}`, updatedUser);
-  return response.data;
-})
-
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getUserDetail: (state, action) => {
-      state.userDetail = action.payload;
-    },
+
     addUser: (state, action) => {
       const newUser: IUser = {
         id: action.payload.id,
@@ -125,12 +112,21 @@ export const userSlice = createSlice({
       );
     },
     editUser: (state, action) => {
-      const updatedUser: IUser = action.payload;
-      const userIndex = state.users.findIndex((user) => user.id === updatedUser.id);
-      if (userIndex !== -1) {
-        state.users[userIndex] = updatedUser;
+      const {id, email, firstname, lastname, city, street, number, phone} = action.payload
+      const existingUser = state.users.find((user) => user.id === id)
+      if (existingUser) {
+        existingUser.name.firstname = firstname,
+        existingUser.name.lastname = lastname,
+        existingUser.email = email,
+        existingUser.address.number = number,
+        existingUser.address.street = street,
+        existingUser.address.city = city,
+        existingUser.phone = phone
       }
-    }
+
+      console.log('state', existingUser?.id, existingUser?.name.firstname, existingUser?.name.lastname)
+
+    },
   },
   extraReducers: builder => {
     builder
@@ -157,18 +153,11 @@ export const userSlice = createSlice({
           });
         });
       })
-      .addCase(addNewUser.fulfilled, (state, action) => {
-        state.users.push(action.payload)
-      })
-      .addCase(editUser.fulfilled, (state, action) => {
-        state.pending = false;
-        state.userDetail = action.payload;
-      })
   },
 });
 
 
-export const { getUserDetail, addUser } = userSlice.actions
+export const { addUser, editUser } = userSlice.actions
 
 export const getListUser = (state: RootState) => state.users
 

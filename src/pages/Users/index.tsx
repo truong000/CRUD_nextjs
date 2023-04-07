@@ -1,15 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchUserList, getListUser } from "@/redux/Slice/userSlice";
 import { useEffect } from "react";
-import Style from '@/styles/ListUser.module.css'
+import Style from '../../styles/ListUser.module.css';
 import Link from "next/link";
 import { useRouter } from "next/router";
 import 'node_modules/bootstrap/dist/css/bootstrap.min.css'
 import ModalAddNewUser from "@/components/ButtonPopupAddUser";
-import ModalEditUser from "@/components/ButtonPopupEditUser";
-
-
-
+import ModalEditUser from "@/components/ButtonEditUser";
 
 
 const Users: React.FC = () => {
@@ -23,7 +20,6 @@ const Users: React.FC = () => {
   useEffect(() => {
     dispatch(fetchUserList());
   },[])
-
 
   if (pending) {
     return <div>Loading...</div>
@@ -60,8 +56,8 @@ const Users: React.FC = () => {
               <td className={Style.td}>{user.phone}</td>
               <td className={Style.td}>
                 <button><Link href={`/users/${user.id}`}>Detail</Link></button>
-                <button onClick={() => router.push(`/users/${user.id}`)}>HEEH</button>
-                <ModalEditUser/>
+                {/* <button onClick={() => router.push(`/users/${user.id}`)}>Details</button> */}
+                <ModalEditUser user={user} />
                 <button>Delete</button>
               </td>
             </tr>

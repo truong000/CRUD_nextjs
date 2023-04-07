@@ -1,37 +1,52 @@
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState } from 'react'
+import { IUser, editUser} from '@/redux/Slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { addUser, editUser } from '@/redux/Slice/userSlice';
 
+interface UserProps {
+    user: IUser;
+}
 
-function ModalEditUser() {
-    const dispatch = useDispatch()
-    const user = useSelector((state: RootState) => state.users.userDetail)
-    const [showModal, setShowModal] = useState(false)
-    const [fisrtname, setFirtName] = useState(user.name.firstname);
+function ModalEditUser({user}: UserProps) {
+    const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
+    const [id, setId] = useState(user.id)
+    const [firstname, setFirtName] = useState(user.name.firstname);
     const [lastname, setLastName] = useState(user.name.lastname);
     const [email, setEmail] = useState(user.email)
     const [phone, setPhone] = useState(user.phone);
     const [number, setNumber] = useState(user.address.number);
     const [street, setStreet] = useState(user.address.street);
     const [city, setCity] = useState(user.address.city);
+    const listUser = useSelector((state: RootState) => state.users)
 
-
-    console.log('list', user)
+    function handleClickEdit(){
+        dispatch(editUser({
+            id,
+            firstname,
+            lastname,
+            email,
+            phone,
+            number,
+            street,
+            city
+        }));
+        setShowModal(false)
+    }
 
     return (
         <>
             <Button variant="success" onClick={() => setShowModal(true)}>
-                Edit User
+                Edit
             </Button>
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>React Modal Popover Example</Modal.Title>
+                    <Modal.Title>Edit user</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Name</Form.Label>
                             <Row>
@@ -39,7 +54,7 @@ function ModalEditUser() {
                                     <Form.Control
                                         type="text"
                                         placeholder="Fisrt name"
-                                        value={fisrtname}  
+                                        value={firstname}  
                                         onChange={(e) => setFirtName(e.target.value)}                                 
                                         autoFocus
                                     />
@@ -116,7 +131,7 @@ function ModalEditUser() {
                     <Button variant="danger" onClick={() => setShowModal(false)}>
                         Close
                     </Button>
-                    <Button variant="dark" onClick={() => setShowModal(false)}>
+                    <Button variant="dark" onClick={() => handleClickEdit()}>
                         Save
                     </Button>
                 </Modal.Footer>
@@ -126,3 +141,13 @@ function ModalEditUser() {
 }
 
 export default ModalEditUser
+
+
+export async function getStaticProps({ params }: { params: { userId: string } }) {
+    const res = await fetch(
+        `https://fakestoreapi.com/users/${params.userId}`
+    );
+    const user = await res.json();
+
+    return {props: {user}};
+}
